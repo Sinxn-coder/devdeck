@@ -1,0 +1,3 @@
+import {describe,expect,it,beforeEach} from 'vitest';import {recordHistory,readHistory} from './history';
+const store=new Map<string,string>();const storage={getItem:(k:string)=>store.get(k)||null,setItem:(k:string,v:string)=>store.set(k,v),removeItem:(k:string)=>store.delete(k)};Object.defineProperty(globalThis,'localStorage',{value:storage,configurable:true});
+describe('safe history',()=>{beforeEach(()=>store.clear());it('redacts credential-like summaries and limits size',()=>{recordHistory({operation:'api',ok:true,summary:'Authorization: Bearer secret-token'});expect(readHistory()[0].summary).not.toContain('secret-token');for(let i=0;i<105;i++)recordHistory({operation:'x',ok:true,summary:`item ${i}`});expect(readHistory()).toHaveLength(100)})});

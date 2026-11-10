@@ -1,0 +1,2 @@
+import {describe,expect,it} from 'vitest'; import {detectProject} from './domain';
+describe('project detection',()=>{it('detects a Vite React TypeScript project',()=>expect(detectProject(['package.json','vite.config.ts','tsconfig.json'],{dependencies:{react:'x'},devDependencies:{vite:'x',typescript:'x'}})).toEqual(['Vite','React','TypeScript','Node.js']));it('detects Python and Git',()=>expect(detectProject(['.git','pyproject.toml'])).toEqual(['Python','Git']));it('keeps unknown projects registerable',()=>expect(detectProject([])).toEqual(['Generic project']))});
